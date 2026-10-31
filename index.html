@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Agent Control Room</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script id="control-room-config" type="application/json">{"snapshot":"./demo.json","synthetic":true}</script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="chrome">
+    <a class="brand" href="./">◎ <span>Agent Control Room</span></a>
+    <label class="run-picker"><span class="sr-only">Investigation</span><select id="run-select"><option>Loading investigations…</option></select></label>
+    <button id="refresh-runs" class="quiet" type="button">Refresh runs</button>
+    <span id="connection" class="connection" role="status">Connecting…</span>
+  </header>
+  <nav class="page-tabs" role="tablist" aria-label="Control Room views">
+    <button id="overview-tab" class="page-tab" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+    <button id="details-tab" class="page-tab" role="tab" aria-controls="investigation-details" aria-selected="false" tabindex="-1">Investigation details</button>
+    <span id="backend" class="meta"></span>
+  </nav>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <main>
+    <section id="overview" role="tabpanel" aria-labelledby="overview-tab">
+      <div class="trigger-heading"><div><p id="trigger-label" class="eyebrow">Investigation trigger</p><h1 id="trigger-title">Waiting for an investigation</h1></div><strong id="trigger-change" class="delta"></strong></div>
+      <div id="trigger-chart" class="trigger-chart"></div>
+      <details id="companion-details" class="companion-details" hidden><summary>Compare companion signals</summary><div id="companions"></div></details>
+      <nav id="stages" class="stages" aria-label="Investigation progress"></nav>
+      <section id="team-canvas" class="team-canvas" aria-label="Agent collaboration">
+        <svg id="edges" class="edges" aria-label="Work handoffs" role="img"><defs><marker id="arrow-tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs><g id="edge-paths"></g><circle id="packet" r="5" fill="currentColor" visibility="hidden"/></svg>
+        <div class="manager"><button class="person" id="manager" data-agent="orchestrator" aria-label="Inspect orchestrator"><span class="avatar" aria-hidden="true">👩🏽‍💼</span><strong>Orchestrator</strong><small>Team manager</small></button><p id="manager-says" class="manager-speech">Select a run to follow the investigation.</p></div>
+        <div id="colleagues" class="colleagues"></div>
+      </section>
+      <div class="now" aria-live="polite"><span id="run-status" class="status">Waiting</span><span id="handoff-label" class="meta"></span></div>
+      <div id="overview-inspector" class="inspector" hidden><button id="close-inspector" class="close" aria-label="Close agent details">×</button><div id="inspector-body"></div></div>
+      <details class="disclosure"><summary id="hypotheses-summary">Hypotheses &amp; review</summary><div id="overview-hypotheses"></div></details>
+      <details class="disclosure"><summary id="activity-summary">Activity</summary><ol id="overview-activity" class="activity"></ol></details>
+    </section>
+    <section id="investigation-details" role="tabpanel" aria-labelledby="details-tab" hidden>
+      <div class="details-heading"><div><p class="eyebrow">Same investigation · more detail</p><h1>Inside the investigation</h1></div><button id="follow-agent" class="quiet" aria-pressed="true">Following active agent</button></div>
+      <div class="current-update" aria-live="polite"><span id="update-by" class="eyebrow"></span><p id="current-update"></p></div>
+      <div class="details-layout"><aside id="agent-list" class="agent-list" aria-label="Assigned agents"></aside><section id="agent-detail" class="agent-detail" aria-label="Selected agent work"></section></div>
+      <section class="detail-section"><h2>How the orchestrator is managing the work</h2><ol id="management" class="activity"></ol></section>
+      <section class="outcome"><h2 id="outcome-title">Outcome pending</h2><p id="outcome-description"></p><div id="outcome-links"></div></section>
+      <details class="disclosure"><summary>Full activity</summary><ol id="detail-activity" class="activity"></ol></details>
+    </section>
+    <footer class="playback">
+      <button id="play" class="primary" disabled>Play replay</button><button id="next" class="quiet" disabled>Next handoff →</button><button id="replay" class="quiet" disabled>Replay from start</button>
+      <label class="speed-label">Pace <select id="speed"><option value="16000">Slow · 16s</option><option value="24000">Very slow · 24s</option><option value="32000">Walkthrough · 32s</option></select></label>
+      <label class="scrub-label"><span class="sr-only">Recorded event</span><input id="scrubber" type="range" min="0" max="0" value="0" disabled></label><span id="event-counter" class="meta">0 events</span>
+      <a id="trace-link" target="_blank" rel="noopener noreferrer" hidden>Open trace ↗</a>
+    </footer>
+    <p id="timing-note" class="timing-note">Reported activity and structured results. Agent internals are not streamed.</p>
+  </main>
+</body>
+</html>

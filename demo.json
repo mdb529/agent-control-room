@@ -1,0 +1,449 @@
+{
+  "run": {
+    "status": "awaiting_human_review",
+    "reason": "Fictional demo: a quality-review proposal awaits a person. No real-world action is taken.",
+    "run_id": "fictional-returns-demo",
+    "signal_id": "return_rate:demo",
+    "backend": "scripted_demo",
+    "synthetic": true
+  },
+  "events": [
+    {
+      "sequence": 1,
+      "timestamp": "2026-01-01T00:00:00+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "run.started",
+      "agent": null,
+      "status": "working",
+      "summary": "Fictional demo: investigating an increase in return rate.",
+      "details": {}
+    },
+    {
+      "sequence": 2,
+      "timestamp": "2026-01-01T00:00:10+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "observation.completed",
+      "agent": null,
+      "status": "ok",
+      "summary": "Demo return rate increased from 12% to 24%.",
+      "details": {
+        "observation": {
+          "metric": "return_rate",
+          "metric_label": "Return rate (%)",
+          "window": "Demo period",
+          "baseline": 12,
+          "observed": 24,
+          "pct_change": 100,
+          "companions": [
+            {
+              "metric": "order_count",
+              "pct_change": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "sequence": 3,
+      "timestamp": "2026-01-01T00:00:20+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.started",
+      "agent": "sentinel",
+      "status": "working",
+      "summary": "Is the return-rate increase real within this demo dataset?",
+      "details": {
+        "attempt": 1
+      }
+    },
+    {
+      "sequence": 4,
+      "timestamp": "2026-01-01T00:00:30+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.completed",
+      "agent": "sentinel",
+      "status": "ok",
+      "summary": "The sample counts confirm the increase; definitions are unchanged.",
+      "details": {
+        "attempt": 1,
+        "output": {
+          "metric": "return_rate",
+          "baseline": 12,
+          "observed": 24,
+          "pct_change": 100
+        }
+      }
+    },
+    {
+      "sequence": 5,
+      "timestamp": "2026-01-01T00:00:40+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "context_scout.started",
+      "agent": "context_scout",
+      "status": "working",
+      "summary": "Retrieving the fictional quality notice and reporting policy.",
+      "details": {}
+    },
+    {
+      "sequence": 6,
+      "timestamp": "2026-01-01T00:00:50+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "context_scout.completed",
+      "agent": "context_scout",
+      "status": "ok",
+      "summary": "Three fictional source excerpts are ready.",
+      "details": {
+        "passage_count": 3,
+        "source_systems": [
+          "demo_documents",
+          "demo_data"
+        ]
+      }
+    },
+    {
+      "sequence": 7,
+      "timestamp": "2026-01-01T00:01:00+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.started",
+      "agent": "analyst",
+      "status": "working",
+      "summary": "Is the return increase concentrated in a batch, or did the definition change?",
+      "details": {
+        "attempt": 1
+      }
+    },
+    {
+      "sequence": 8,
+      "timestamp": "2026-01-01T00:01:10+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.completed",
+      "agent": "analyst",
+      "status": "ok",
+      "summary": "Two explanations proposed: a batch issue or a definition change.",
+      "details": {
+        "attempt": 1,
+        "output": {
+          "hypotheses": [
+            {
+              "id": "h1",
+              "statement": "The packaging issue in batch B-17 may explain the increase.",
+              "evidence_passage_ids": [
+                "demo-quality-notice"
+              ],
+              "data_refs": [],
+              "confidence": 0.65
+            },
+            {
+              "id": "h2",
+              "statement": "A reporting-definition change may be making returns look higher.",
+              "evidence_passage_ids": [],
+              "data_refs": [],
+              "confidence": 0.35
+            }
+          ],
+          "leading_hypothesis_id": "h1",
+          "draft_explanation": "The fictional quality notice makes batch B-17 a plausible lead. I have not yet compared batch-level return counts, so the effect is not established."
+        }
+      }
+    },
+    {
+      "sequence": 9,
+      "timestamp": "2026-01-01T00:01:20+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.started",
+      "agent": "skeptic",
+      "status": "working",
+      "summary": "Do the proposed explanations hold up against the notice and the counts?",
+      "details": {
+        "attempt": 1
+      }
+    },
+    {
+      "sequence": 10,
+      "timestamp": "2026-01-01T00:01:30+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.completed",
+      "agent": "skeptic",
+      "status": "ok",
+      "summary": "The batch idea needs numbers; the reporting-change idea is contradicted.",
+      "details": {
+        "attempt": 1,
+        "output": {
+          "verdict": "revise",
+          "claims_tested": [
+            {
+              "claim": "The quality issue explains the increase.",
+              "test": "The notice identifies a risk, but the first draft has not compared batch-level counts.",
+              "result": "unsupported"
+            },
+            {
+              "claim": "The reporting definition changed.",
+              "test": "The fictional reporting policy explicitly says the definition and window are unchanged.",
+              "result": "contradicted"
+            }
+          ],
+          "conflicts_with_canonical": [],
+          "required_revisions": [
+            "Compare batch B-17 with other batches.",
+            "Remove the unsupported reporting-change explanation."
+          ]
+        }
+      }
+    },
+    {
+      "sequence": 11,
+      "timestamp": "2026-01-01T00:01:40+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "revision.requested",
+      "agent": "orchestrator",
+      "status": "reviewing",
+      "summary": "Analyst, compare the cohorts and address both review findings.",
+      "details": {
+        "finding_count": 2
+      }
+    },
+    {
+      "sequence": 12,
+      "timestamp": "2026-01-01T00:01:50+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.started",
+      "agent": "analyst",
+      "status": "working",
+      "summary": "What do the batch-level return counts show?",
+      "details": {
+        "attempt": 2
+      }
+    },
+    {
+      "sequence": 13,
+      "timestamp": "2026-01-01T00:02:00+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.completed",
+      "agent": "analyst",
+      "status": "ok",
+      "summary": "B-17 has 60% returns; other batches have 15%. The cause still needs inspection.",
+      "details": {
+        "attempt": 2,
+        "output": {
+          "hypotheses": [
+            {
+              "id": "h1",
+              "statement": "The increase is concentrated in batch B-17: 60% return rate versus 15% for other batches. The packaging issue is a plausible cause to investigate.",
+              "evidence_passage_ids": [
+                "demo-quality-notice",
+                "demo-cohort-counts"
+              ],
+              "data_refs": [
+                "demo-cohort-counts"
+              ],
+              "confidence": 0.85
+            },
+            {
+              "id": "h2",
+              "statement": "A reporting-definition change is unlikely: the fictional policy confirms no definition change.",
+              "evidence_passage_ids": [
+                "demo-reporting-policy"
+              ],
+              "data_refs": [],
+              "confidence": 0.05
+            }
+          ],
+          "leading_hypothesis_id": "h1",
+          "draft_explanation": "In the fictional counts, B-17 has 12 returns from 20 orders (60%). Other batches have 12 from 80 (15%). The packaging notice makes quality a plausible explanation for the concentration. This is an association, not proof of cause; a person should inspect the batch before acting."
+        }
+      }
+    },
+    {
+      "sequence": 14,
+      "timestamp": "2026-01-01T00:02:10+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.started",
+      "agent": "skeptic",
+      "status": "working",
+      "summary": "Are the revised counts correct, and is the conclusion appropriately limited?",
+      "details": {
+        "attempt": 2
+      }
+    },
+    {
+      "sequence": 15,
+      "timestamp": "2026-01-01T00:02:20+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.completed",
+      "agent": "skeptic",
+      "status": "ok",
+      "summary": "The arithmetic checks out. The revised explanation preserves uncertainty.",
+      "details": {
+        "attempt": 2,
+        "output": {
+          "verdict": "pass",
+          "claims_tested": [
+            {
+              "claim": "B-17 returns are 60%, compared with 15% for other batches.",
+              "test": "Recomputed the fictional counts: 12/20 = 60%; 12/80 = 15%.",
+              "result": "supported"
+            },
+            {
+              "claim": "The evidence supports investigation rather than a confirmed cause.",
+              "test": "The revised draft explicitly calls the relationship an association and requests a physical inspection.",
+              "result": "supported"
+            }
+          ],
+          "conflicts_with_canonical": [],
+          "required_revisions": []
+        }
+      }
+    },
+    {
+      "sequence": 16,
+      "timestamp": "2026-01-01T00:02:30+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.started",
+      "agent": "decision_maker",
+      "status": "working",
+      "summary": "What is the smallest useful follow-up for a person to review?",
+      "details": {
+        "attempt": 1
+      }
+    },
+    {
+      "sequence": 17,
+      "timestamp": "2026-01-01T00:02:40+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.completed",
+      "agent": "decision_maker",
+      "status": "ok",
+      "summary": "Propose a quality review of the affected batch.",
+      "details": {
+        "attempt": 1,
+        "output": {
+          "decision": "Ask a reviewer to inspect demo batch B-17 and annotate the return-rate finding.",
+          "rationale": "The sample counts isolate a high-return cohort, but inspection is needed before concluding causation or changing operations.",
+          "owner": "Demo reviewer",
+          "requires_human_approval": true,
+          "change_spec": {
+            "type": "annotation",
+            "target_paths": [
+              "charts/demo/returns.yml"
+            ],
+            "description": "Document the fictional cohort comparison and the need for review.",
+            "acceptance_criteria": [
+              "Preserve the uncertainty about cause.",
+              "A person reviews the proposed follow-up."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sequence": 18,
+      "timestamp": "2026-01-01T00:02:50+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "approval.required",
+      "agent": "governance_gate",
+      "status": "waiting",
+      "summary": "The fictional follow-up is ready for human review.",
+      "details": {
+        "change_type": "annotation",
+        "target_paths": [
+          "charts/demo/returns.yml"
+        ]
+      }
+    },
+    {
+      "sequence": 19,
+      "timestamp": "2026-01-01T00:03:00+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "agent.skipped",
+      "agent": "developer",
+      "status": "skipped",
+      "summary": "No implementation: the demo proposal has not been approved.",
+      "details": {}
+    },
+    {
+      "sequence": 20,
+      "timestamp": "2026-01-01T00:03:10+00:00",
+      "run_id": "fictional-returns-demo",
+      "signal_id": "return_rate:demo",
+      "backend": "scripted_demo",
+      "event": "run.completed",
+      "agent": null,
+      "status": "awaiting_human_review",
+      "summary": "Fictional investigation complete; human review is pending.",
+      "details": {}
+    }
+  ],
+  "context": {
+    "observation": {
+      "metric": "return_rate",
+      "metric_label": "Return rate (%)",
+      "window": "Demo period",
+      "baseline": 12,
+      "observed": 24,
+      "pct_change": 100,
+      "companions": [
+        {
+          "metric": "order_count",
+          "pct_change": 0
+        }
+      ]
+    },
+    "evidence": {
+      "passages": [
+        {
+          "passage_id": "demo-quality-notice",
+          "source_system": "demo_documents",
+          "text": "FICTIONAL DEMO: A sample inspection found a packaging issue in batch B-17 before the demo period. The notice recommends checking whether this cohort has more returns."
+        },
+        {
+          "passage_id": "demo-reporting-policy",
+          "source_system": "demo_documents",
+          "text": "FICTIONAL DEMO: The return-rate definition and reporting window are unchanged. Returns divided by orders is the same calculation in both demo periods."
+        },
+        {
+          "passage_id": "demo-cohort-counts",
+          "source_system": "demo_data",
+          "text": "FICTIONAL DEMO COUNTS: Before: 12 returns / 100 orders = 12%. Current: 24 returns / 100 orders = 24%. Batch B-17: 12 returns / 20 orders = 60%. Other batches: 12 returns / 80 orders = 15%. The numbers are invented for this UI demo."
+        }
+      ],
+      "governed_decisions": []
+    }
+  }
+}
