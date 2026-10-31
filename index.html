@@ -7,7 +7,7 @@
   <title>Agent Control Room</title>
   <link rel="stylesheet" href="./styles.css">
   <script id="control-room-config" type="application/json">{"snapshot":"./demo.json","synthetic":true}</script>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=pace-controls"></script>
 </head>
 <body>
   <header class="chrome">
@@ -48,7 +48,7 @@
     </section>
     <footer class="playback">
       <button id="play" class="primary" disabled>Play replay</button><button id="next" class="quiet" disabled>Next handoff →</button><button id="replay" class="quiet" disabled>Replay from start</button>
-      <label class="speed-label">Pace <select id="speed"><option value="16000">Slow · 16s</option><option value="24000">Very slow · 24s</option><option value="32000">Walkthrough · 32s</option></select></label>
+      <label class="speed-label">Pace <select id="speed"><option value="16000">Slow · 16s</option><option value="10000" selected>Medium · 10s</option><option value="5000">Fast · 5s</option></select></label>
       <label class="scrub-label"><span class="sr-only">Recorded event</span><input id="scrubber" type="range" min="0" max="0" value="0" disabled></label><span id="event-counter" class="meta">0 events</span>
       <a id="trace-link" target="_blank" rel="noopener noreferrer" hidden>Open trace ↗</a>
     </footer>

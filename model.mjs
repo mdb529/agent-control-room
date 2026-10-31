@@ -121,10 +121,7 @@ export function measuredComparison(observation) {
   return {baseline,observed,min:Math.min(0,baseline,observed),max:Math.max(0,baseline,observed),pct:number(observation.pct_change)};
 }
 
-/** A readable dwell, independent of bursts in the live event stream. */
-export function presentationDelay(event, pace=16000) {
-  const minimum=Math.max(16000,number(pace)??16000);
-  const finding=event?.event==='revision.requested'||
-    (event?.event==='agent.completed'&&['analyst','skeptic','decision_maker'].includes(event.agent));
-  return finding?Math.round(minimum*1.5):minimum;
+/** Use the selected interval consistently, including findings and revisions. */
+export function presentationDelay(_event, pace=10000) {
+  return [16000,10000,5000].includes(pace)?pace:10000;
 }

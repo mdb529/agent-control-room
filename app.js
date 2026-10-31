@@ -1,4 +1,4 @@
-import {AGENTS, TERMINAL, normalizeEvents, isTerminal, project, visibleColleagues, measuredComparison, presentationDelay, safeURL, number, label} from './model.mjs';
+import {AGENTS, TERMINAL, normalizeEvents, isTerminal, project, visibleColleagues, measuredComparison, presentationDelay, safeURL, number, label} from './model.mjs?v=pace-controls';
 
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -105,7 +105,7 @@ function renderControls(){
   const trace=state.events.slice(0,state.cursor+1).find(e=>safeURL(e.langfuse_trace_url))?.langfuse_trace_url;
   $('trace-link').hidden=!trace;if(trace)$('trace-link').href=safeURL(trace);
   const dwell=presentationDelay(state.events[state.cursor],Number($('speed').value))/1000;
-  $('timing-note').textContent=`${config.synthetic?'Fictional data & scripted responses':state.liveCapable?'Live events · paced view':'Recorded events'} · ${dwell}s for this step · findings get extra reading time${config.synthetic?'': ' · source timestamps preserved'}.`;
+  $('timing-note').textContent=`${config.synthetic?'Fictional data & scripted responses':state.liveCapable?'Live events · paced view':'Recorded events'} · ${dwell}s between steps${config.synthetic?'': ' · source timestamps preserved'}.`;
 }
 
 function render(motion=false){

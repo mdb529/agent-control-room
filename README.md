@@ -2,9 +2,9 @@
 
 A mobile-friendly, fully fictional scripted investigation. All numbers, documents, events and agent responses are invented for this demo. No real run data or internal organizational material is included.
 
-Open the GitHub Pages site. Playback starts automatically: 16 seconds per step,
-24 seconds for hypotheses, independent reviews and revision requests. Slower
-options are available. Pause, inspect an avatar, or open Investigation details
+Open the GitHub Pages site. Playback starts automatically at Medium: 10 seconds
+between steps. Choose Slow (16 seconds), Medium (10 seconds), or Fast (5 seconds).
+Every step uses the selected interval. Pause, inspect an avatar, or open Investigation details
 to explore the recorded evidence and outcomes.
 
 ## Continue editing in Claude Code
