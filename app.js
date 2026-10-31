@@ -1,4 +1,5 @@
 import {AGENTS, TERMINAL, normalizeEvents, isTerminal, project, visibleColleagues, measuredComparison, presentationDelay, safeURL, number, label} from './model.mjs?v=pace-controls';
+import {mountEnterprise} from './enterprise.mjs?v=enterprise-tab-1';
 
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -11,6 +12,11 @@ const state={runs:[],run:null,context:{},contextVersion:0,events:[],cursor:-1,pl
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const config=JSON.parse($('control-room-config')?.textContent||'{}');
 let savedSnapshot;
+let activeTab='overview',resumeInvestigation=false,enterpriseStatus='Enterprise simulation · ready';
+const enterprise=mountEnterprise($('enterprise-vision'),{onStatus:({running,finished})=>{
+  enterpriseStatus=`Enterprise simulation · ${running?'playing':finished?'finished':'paused'}`;
+  if(activeTab==='enterprise')renderConnection();
+}});
 
 function notice(message=''){$('notice').hidden=!message;$('notice').textContent=message;}
 async function getJSON(url,signal){
@@ -57,6 +63,7 @@ async function loadRun(id){
     state.liveCapable=listed.is_live_native===true&&!isTerminal(state.events);
     state.following=state.liveCapable;state.cursor=Math.min(0,state.events.length-1);
     state.playing=!state.liveCapable&&state.events.length>1;state.shownAt=performance.now();
+    if(activeTab==='enterprise'){resumeInvestigation=state.following||state.playing;state.following=false;state.playing=false;}
     $('run-select').value=id;render();if(state.liveCapable)followLive(id,epoch);schedule();
   }catch(error){if(error.name!=='AbortError'&&epoch===state.epoch){notice(`Could not open this run. ${error.message}`);$('connection').textContent='Unable to open run';}}
 }
@@ -89,7 +96,8 @@ async function refreshContext(id,epoch){
 }
 function renderConnection(){
   let message;
-  if(!state.run)message=state.events.length?'Loading…':'No run selected';
+  if(activeTab==='enterprise')message=enterpriseStatus;
+  else if(!state.run)message=state.events.length?'Loading…':'No run selected';
   else if(state.liveCapable)message=state.connected?(state.following?`● Live · paced${state.events.length-state.cursor-1?' · '+(state.events.length-state.cursor-1)+' queued':''}`:'Live · view paused'):'Reconnecting to live events…';
   else message=config.snapshot?`${config.synthetic?'Fictional demo':'Recorded demo'} · ${state.playing?'playing':state.view.terminal?'finished':'paused'}`:state.playing?'Replay · playing':state.view.terminal?'Replay · finished':'Replay · paused';
   $('connection').textContent=message;$('connection').className=`connection ${state.liveCapable&&state.connected?'live':''}`;
@@ -248,10 +256,24 @@ function play(){
   if(state.cursor>=state.events.length-1)state.cursor=0;
   state.playing=true;state.shownAt=performance.now();render();schedule();
 }
-function switchTab(details,focus=false){
-  $('overview').hidden=details;$('investigation-details').hidden=!details;
-  for(const[id,selected]of [['overview-tab',!details],['details-tab',details]]){$(id).setAttribute('aria-selected',String(selected));$(id).tabIndex=selected?0:-1;if(selected&&focus)$(id).focus();}
-  if(!details)requestAnimationFrame(()=>{chart(state.view.observation||state.context.observation);drawEdges();});
+const tabs=[{key:'overview',tab:'overview-tab',panel:'overview'},{key:'details',tab:'details-tab',panel:'investigation-details'},{key:'enterprise',tab:'enterprise-tab',panel:'enterprise-vision'}];
+function switchTab(key,focus=false){
+  if(key===activeTab){if(focus)$(tabs.find(t=>t.key===key).tab).focus();return;}
+  if(activeTab==='enterprise')enterprise.leave();
+  const leavingEnterprise=activeTab==='enterprise';
+  if(key==='enterprise'){
+    resumeInvestigation=state.playing||state.following;state.playing=false;state.following=false;clearPlayback();
+  }
+  activeTab=key;
+  for(const t of tabs){const selected=t.key===key;$(t.panel).hidden=!selected;$(t.tab).setAttribute('aria-selected',String(selected));$(t.tab).tabIndex=selected?0:-1;if(selected&&focus)$(t.tab).focus();}
+  const vision=key==='enterprise';
+  $('investigation-playback').hidden=vision;$('timing-note').hidden=vision;$('run-select').closest('label').hidden=vision;$('refresh-runs').hidden=vision;$('backend').hidden=vision;
+  if(vision)enterprise.enter();
+  else if(leavingEnterprise&&resumeInvestigation){
+    state.following=state.liveCapable;state.playing=!state.liveCapable&&state.cursor<state.events.length-1;state.shownAt=performance.now();schedule();resumeInvestigation=false;
+  }
+  renderConnection();renderControls();
+  if(key==='overview')requestAnimationFrame(()=>{chart(state.view.observation||state.context.observation);drawEdges();});
 }
 $('run-select').addEventListener('change',e=>loadRun(e.target.value));$('refresh-runs').addEventListener('click',()=>config.snapshot&&state.run?loadRun(state.run.run_id):refreshRuns(!state.run));
 if(config.snapshot)$('refresh-runs').textContent='Restart demo';
@@ -265,8 +287,10 @@ document.addEventListener('click',e=>{const button=e.target.closest('[data-agent
   if(button.dataset.agent){state.inspected=button.dataset.agent;$('overview-inspector').hidden=false;replace('inspector-body',inspectorHTML(state.view.agents[state.inspected]));}
   else{state.selected=button.dataset.select;state.followAgent=false;renderDetails(state.view);}
 });
-$('overview-tab').addEventListener('click',()=>switchTab(false));$('details-tab').addEventListener('click',()=>switchTab(true));
-for(const id of ['overview-tab','details-tab'])$(id).addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();switchTab(e.key==='Home'?false:e.key==='End'?true:id==='overview-tab',true);}});
+for(const [index,t]of tabs.entries()){
+  $(t.tab).addEventListener('click',()=>switchTab(t.key));
+  $(t.tab).addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;switchTab(tabs[next].key,true);}});
+}
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(state.animation);$('packet').setAttribute('visibility','hidden');}});
 new ResizeObserver(()=>{chart(state.view.observation||state.context.observation);drawEdges();}).observe($('team-canvas'));
 refreshRuns(true);

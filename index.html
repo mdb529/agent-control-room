@@ -6,8 +6,9 @@
   <meta name="color-scheme" content="light dark">
   <title>Agent Control Room</title>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./enterprise.css?v=enterprise-tab-1">
   <script id="control-room-config" type="application/json">{"snapshot":"./demo.json","synthetic":true}</script>
-  <script type="module" src="./app.js?v=pace-controls"></script>
+  <script type="module" src="./app.js?v=enterprise-tab-1"></script>
 </head>
 <body>
   <header class="chrome">
@@ -19,6 +20,7 @@
   <nav class="page-tabs" role="tablist" aria-label="Control Room views">
     <button id="overview-tab" class="page-tab" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
     <button id="details-tab" class="page-tab" role="tab" aria-controls="investigation-details" aria-selected="false" tabindex="-1">Investigation details</button>
+    <button id="enterprise-tab" class="page-tab" role="tab" aria-controls="enterprise-vision" aria-selected="false" tabindex="-1">Enterprise</button>
     <span id="backend" class="meta"></span>
   </nav>
   <div id="notice" class="notice" role="status" hidden></div>
@@ -46,7 +48,8 @@
       <section class="outcome"><h2 id="outcome-title">Outcome pending</h2><p id="outcome-description"></p><div id="outcome-links"></div></section>
       <details class="disclosure"><summary>Full activity</summary><ol id="detail-activity" class="activity"></ol></details>
     </section>
-    <footer class="playback">
+    <section id="enterprise-vision" role="tabpanel" aria-labelledby="enterprise-tab" hidden></section>
+    <footer class="playback" id="investigation-playback">
       <button id="play" class="primary" disabled>Play replay</button><button id="next" class="quiet" disabled>Next handoff →</button><button id="replay" class="quiet" disabled>Replay from start</button>
       <label class="speed-label">Pace <select id="speed"><option value="16000">Slow · 16s</option><option value="10000" selected>Medium · 10s</option><option value="5000">Fast · 5s</option></select></label>
       <label class="scrub-label"><span class="sr-only">Recorded event</span><input id="scrubber" type="range" min="0" max="0" value="0" disabled></label><span id="event-counter" class="meta">0 events</span>
